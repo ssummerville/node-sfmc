@@ -1,0 +1,22 @@
+{
+  "name": "node-sfmc",
+  "version": "1.0.0",
+  "description": "A REST only Node.js client for the Salesforce Marketing Cloud API",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node .",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "Spencer Summerville <spencer@summerville.dev>",
+  "license": "ISC",
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "axios-logger": "^2.6.2",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@types/node": "^18.15.0",
+    "axios": "^1.3.4"
+  }
+}
