@@ -1,4 +1,4 @@
-let deletedAsset = {
+let DeletedAsset = {
   get() {
     console.log('get')
   },
@@ -8,4 +8,4 @@ let deletedAsset = {
   },
 }
 
-export default deletedAsset
+export default DeletedAsset

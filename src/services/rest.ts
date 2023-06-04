@@ -3,6 +3,16 @@ import * as AxiosLogger from 'axios-logger'
 
 import config from './config'
 
+let BASE_URL
+
+// For initial testing, use a request catcher instead of making
+// requests to the actual API
+if (config.env === 'testing') {
+  BASE_URL = 'https://node-sfmc.requestcatcher.com/'
+} else {
+  BASE_URL = `https://${config.baseUri}.rest.marketingcloudapis.com/`
+}
+
 interface TokenResponse {
   access_token: string
   expires_in: number
@@ -23,23 +33,27 @@ let accessToken: string | null = null
 let expiresAt: number = 0
 
 let rest: AxiosInstance = axios.create({
-  baseURL: `https://${config.baseUri}.rest.marketingcloudapis.com/`,
+  baseURL: BASE_URL,
+  headers: { 'User-Agent': 'node-sfmc' },
 })
 
 // Add a request interceptor that checks if token is set or if expiresAt is in the past
-rest.interceptors.request.use(async (config) => {
-  if (!accessToken || expiresAt < Date.now()) {
-    let response = await authenticate()
-    accessToken = response['access_token']
-    expiresAt = response['expires_in']
-  }
+if (config.env === 'production' || config.env === 'development') {
+  rest.interceptors.request.use(async (config) => {
+    if (!accessToken || expiresAt < Date.now()) {
+      let response = await authenticate()
+      accessToken = response['access_token']
+      expiresAt = response['expires_in']
+    }
 
-  config.headers.Authorization = `Bearer ${accessToken}`
+    config.headers.Authorization = `Bearer ${accessToken}`
 
-  return config
-})
+    return config
+  })
+}
 
-if (config.env === 'development') {
+// Use verbose logging when during development or testing
+if (config.env === 'development' || config.env === 'testing') {
   rest.interceptors.response.use(AxiosLogger.responseLogger)
 }
 
