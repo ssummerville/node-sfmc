@@ -1,28 +1,18 @@
 import axios, { AxiosInstance } from 'axios'
 import * as AxiosLogger from 'axios-logger'
 
-import config from './config'
+import type { TokenResponse } from '../types/TokenResponse'
 
-let BASE_URL
+import config from './config'
 
 // For initial testing, use a request catcher instead of making
 // requests to the actual API
+let BASE_URL
+
 if (config.env === 'testing') {
   BASE_URL = 'https://node-sfmc.requestcatcher.com/'
 } else {
   BASE_URL = `https://${config.baseUri}.rest.marketingcloudapis.com/`
-}
-
-interface TokenResponse {
-  access_token: string
-  expires_in: number
-  token_type: string
-  rest_instance_url: string
-  soap_instance_url: string
-  scope: string
-  error?: string
-  error_description?: string
-  error_uri?: string
 }
 
 /**
@@ -51,6 +41,9 @@ if (config.env === 'production' || config.env === 'development') {
     return config
   })
 }
+
+// Implement best practices as outlined in:
+// https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/rate-limiting-best-practices.html
 
 // Use verbose logging when during development or testing
 if (config.env === 'development' || config.env === 'testing') {
