@@ -1,20 +1,16 @@
-import DeletedAssetResource from './DeletedAsset'
-
 import rest from '../../services/rest'
 
-let BASE_URI = 'asset/v1/content'
+let BASE_URI = 'asset/v1/content/assets'
 
-let Asset = {
-  deleted: DeletedAssetResource,
+let AssetResource = {
   // GET
-  getByID: (id: number) => rest.get(`${BASE_URI}/assets/${id}`),
-  getFile: (id: number) => rest.get(`${BASE_URI}/assets/${id}/file`),
-  getSalutations: () => {},
+  get: (id: number) => rest.get(`${BASE_URI}/${id}`),
+  getFile: (id: number) => rest.get(`${BASE_URI}/${id}/file`),
   // POST
-  query: (data: any) => rest.post(`${BASE_URI}/assets/query`, data),
-  create: (data: any) => rest.post(`${BASE_URI}/assets`, data),
+  query: (data: any) => rest.post(`${BASE_URI}/query`, data),
+  create: (data: any) => rest.post(`${BASE_URI}/`, data),
   // PUT
-  update: (id: number, data: any) => rest.put(`${BASE_URI}/assets/${id}`, data),
+  update: (id: number, data: any) => rest.put(`${BASE_URI}/${id}`, data),
   // DELETE
 
   /**
@@ -22,10 +18,8 @@ let Asset = {
    * @param id The ID of the asset to delete.
    * @param isCDNDelete Whether to delete the asset from Content Builder and the CDN as well. Use this if you want to break a link to an asset.
    */
-  delete: (id: number, isCDNDelete?: boolean) =>
-    rest.delete(
-      `${BASE_URI}/assets/${id}${isCDNDelete === true ? '/?isCDNDelete=1' : ''}`
-    ),
+  delete: (id: number, isCDNDelete: boolean = false) =>
+    rest.delete(`${BASE_URI}/assets/${id}`, { params: { isCDNDelete } }),
 }
 
-export default Asset
+export default AssetResource
