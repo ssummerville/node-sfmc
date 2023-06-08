@@ -15,16 +15,18 @@ if (config.env === 'testing') {
   BASE_URL = `https://${config.baseUri}.rest.marketingcloudapis.com/`
 }
 
-/**
- * Implements an Axios instance that automatically
- * refreshes tokens whenever necessary.
- */
 let accessToken: string | null = null
 let expiresAt: number = 0
+let TWO_MINUTES_IN_MS = 120000
 
+/**
+ * Implements an Axios instance that automatically
+ * refreshes access tokens whenever necessary.
+ */
 let rest: AxiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: { 'User-Agent': 'node-sfmc' },
+  timeout: TWO_MINUTES_IN_MS,
 })
 
 // Add a request interceptor that checks if token is set or if expiresAt is in the past
