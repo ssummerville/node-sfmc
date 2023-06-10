@@ -3,6 +3,8 @@ import rest from '../../services/rest'
 import type { Method } from 'axios'
 import type { PayloadType, AsyncPayload, SyncPayload } from '../../types/DataRows'
 
+let BASE_URI: string = "data/v1/async"
+
 /**
  * Helper function that creates a request to the DataEvents API
  * and can alter the shape of the payload and endpoint called based on
@@ -19,7 +21,7 @@ let _req = (
   // Depending on whether we're making an async/sync request, we need to use a different
   // endpoint and data structure for our payload. Why? Your guess is as good as mine.
   if (async) {
-    url = `async/data/v1/async/dataextensions/key:${key}/rows`
+    url = `${BASE_URI}/dataextensions/key:${key}/rows`
     data = { items: payload }
   } else {
     url = `hub/v1/dataevents/key:${key}/rowset`
@@ -39,12 +41,12 @@ let DataRowsResource = {
    * Retrieve the results of a processed Async API request.
    * @param requestId
    */
-  results: (requestId: string) => {},
+  results: (requestId: string) => rest.get(`${BASE_URI}/${requestId}/results`),
   /**
    * Retrieve the status of a submitted Async API request.
    * @param requestId
    */
-  status: (requestId: string) => {},
+  status: (requestId: string) => rest.get(`${BASE_URI}/${requestId}/status`),
   // POST
   insertSync: (key: string, values: SyncPayload[]) => _req(key, 'post', values),
   insertAsync: (key: string, values: AsyncPayload) =>
