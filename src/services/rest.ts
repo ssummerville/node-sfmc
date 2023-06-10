@@ -5,10 +5,11 @@ import type { TokenResponse } from '../types/TokenResponse'
 
 import config from './config'
 
+// Set up the base URL variable for the Axios instance
+let BASE_URL: string
+
 // For initial testing, use a request catcher instead of making
 // requests to the actual API
-let BASE_URL
-
 if (config.env === 'testing') {
   BASE_URL = 'https://node-sfmc.requestcatcher.com/'
 } else {
@@ -17,7 +18,7 @@ if (config.env === 'testing') {
 
 let accessToken: string | null = null
 let expiresAt: number = 0
-let TWO_MINUTES_IN_MS = 120000
+let TWO_MINUTES_IN_MS: number = 120000
 
 /**
  * Implements an Axios instance that automatically

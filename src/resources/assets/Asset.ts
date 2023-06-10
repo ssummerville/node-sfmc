@@ -1,6 +1,6 @@
 import rest from '../../services/rest'
 
-let BASE_URI = 'asset/v1/content/assets'
+let BASE_URI: string = 'asset/v1/content/assets'
 
 let AssetResource = {
   // GET
