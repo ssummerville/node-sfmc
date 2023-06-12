@@ -1,9 +1,13 @@
 import rest from '../../services/rest'
 
 import type { Method } from 'axios'
-import type { PayloadType, AsyncPayload, SyncPayload } from '../../types/DataRows'
+import type {
+  PayloadType,
+  AsyncPayload,
+  SyncPayload,
+} from '../../types/DataRows'
 
-let BASE_URI: string = "data/v1/async"
+let BASE_URI: string = 'data/v1/async'
 
 /**
  * Helper function that creates a request to the DataEvents API
@@ -41,18 +45,27 @@ let DataRowsResource = {
    * Retrieve the results of a processed Async API request.
    * @param requestId
    */
-  results: (requestId: string) => rest.get(`${BASE_URI}/${requestId}/results`),
+  results(requestId: string) {
+    return rest.get(`${BASE_URI}/${requestId}/results`)
+  },
   /**
    * Retrieve the status of a submitted Async API request.
    * @param requestId
    */
-  status: (requestId: string) => rest.get(`${BASE_URI}/${requestId}/status`),
+  status(requestId: string) {
+    return rest.get(`${BASE_URI}/${requestId}/status`)
+  },
   // POST
-  insertSync: (key: string, values: SyncPayload[]) => _req(key, 'post', values),
-  insertAsync: (key: string, values: AsyncPayload) =>
-    _req(key, 'post', values, true),
+  insertSync(key: string, values: SyncPayload[]) {
+    return _req(key, 'post', values)
+  },
+  insertAsync(key: string, values: AsyncPayload) {
+    return _req(key, 'post', values, true)
+  },
   // PUT
-  update: (key: string, values: AsyncPayload) => _req(key, 'put', values, true),
+  update(key: string, values: AsyncPayload) {
+    return _req(key, 'put', values, true)
+  },
   /**
    * Increment a specific column of a row in a data extension.
    * @param key The external key of the data extension
@@ -60,12 +73,12 @@ let DataRowsResource = {
    * @param incrementedColumn The column that will have its value incremented
    * @param step How much to increment the value of the column by. Defaults to 1.
    */
-  incrementValue: (
+  incrementValue(
     key: string,
     primaryKey: { column: string; value: string },
     incrementedColumn: string,
     step: number = 1
-  ) => {
+  ) {
     let { column, value } = primaryKey
     return rest.request({
       url: `hub/v1/dataevents/key:${key}/rows/${column}:${value}/column/${incrementedColumn}/increment`,
