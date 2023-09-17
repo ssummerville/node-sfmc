@@ -41,6 +41,9 @@ let _req = (
 
 let DataRowsResource = {
   // GET
+  get(key: string) {
+    return rest.get(`data/v1/customobjectdata/key/${key}/rowset`)
+  },
   /**
    * Retrieve the results of a processed Async API request.
    * @param requestId
